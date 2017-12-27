@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.shalastra</groupId>
-	<artifactId>facerecognition</artifactId>
+	<artifactId>face-know</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
-	<name>facerecognition</name>
-	<description>Demo project for Spring Boot</description>
+	<name>face-know</name>
+	<description>Face recognition demo project.</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -18,33 +18,51 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+    <properties>
+        <main.basedir>${project.basedir}</main.basedir>
+		<!-- Analysis Tools for CI -->
+		<build-plugin.jacoco.version>0.7.9</build-plugin.jacoco.version>
+		<build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
+    </properties>
+	
+	<modules>
+        <module>frontend</module>
+        <module>backend</module>
+    </modules>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${build-plugin.jacoco.version}</version>
+				<executions>
+					<!-- Prepares the property pointing to the JaCoCo
+                    runtime agent which is passed as VM argument when Maven the Surefire plugin
+                    is executed. -->
+					<execution>
+						<id>pre-unit-test</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- Ensures that the code coverage report for
+                    unit tests is created after unit tests have been run. -->
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>${build-plugin.coveralls.version}</version>
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
